@@ -16,11 +16,6 @@ dependencyResolutionManagement {
     repositories {
         google()
         maven { url = uri("https://jitpack.io") }
-        maven { url = uri("https://github.com/Fenige/FenigeSDK-Android")
-            credentials {
-                username = "Fenige"
-                password = "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"
-            }}
         mavenCentral()
     }
 }

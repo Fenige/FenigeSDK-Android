@@ -3,7 +3,6 @@ package com.sdk.fenigepaytool.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
@@ -11,10 +10,12 @@ import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.sdk.fenigepaytool.BuildConfig
+import com.sdk.fenigepaytool.api.Api
+import com.sdk.fenigepaytool.api.Api.Companion.getTransactionUrl
 import com.sdk.fenigepaytool.api.request.PaytoolRequest
 import com.sdk.fenigepaytool.databinding.ActivityPaytoolBinding
 import com.sdk.fenigepaytool.di.coreModule
+import com.sdk.fenigepaytool.entity.Config
 import com.sdk.fenigepaytool.entity.PaytoolResultCallback
 import com.sdk.fenigepaytool.entity.RedirectUrl
 import com.sdk.fenigepaytool.entity.Sender
@@ -34,10 +35,12 @@ internal class PaytoolActivity: AppCompatActivity() {
             merchantUrl: String, orderNumber: String,
             formLanguage: String, redirectUrl: RedirectUrl,
             sender: Sender, transactionId: String,
+            autoClear: Boolean, config: Config,
             paytoolResultCallback: PaytoolResultCallback
         ) {
             val intent = Intent(activity, PaytoolActivity::class.java)
             val bundle = Bundle()
+            Api.config = config
             val paytoolRequest = PaytoolRequest(
                 transactionId = transactionId,
                 currencyCode = currencyCode,
@@ -48,6 +51,7 @@ internal class PaytoolActivity: AppCompatActivity() {
                 formLanguage = formLanguage,
                 redirectUrl = redirectUrl,
                 sender = sender,
+                autoClear = autoClear
             )
             mPaytoolResultCallback = paytoolResultCallback
             bundle.putParcelable(REQUEST_OBJECT_KEY, paytoolRequest)
@@ -105,7 +109,6 @@ internal class PaytoolActivity: AppCompatActivity() {
             webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView, url: String?) {
                     url?.let {
-                        Log.d("TAG", url)
                         visibility = View.VISIBLE
                         binding.progress.visibility = View.GONE
                         if (it.contains(redirectUrl.successUrl) || it.contains(redirectUrl.failureUrl))
@@ -115,7 +118,7 @@ internal class PaytoolActivity: AppCompatActivity() {
             }
             webChromeClient = WebChromeClient()
             settings.javaScriptEnabled = true
-            loadUrl(BuildConfig.TRANSACTION_URL + transactionId)
+            loadUrl(getTransactionUrl() + transactionId)
         }
     }
 

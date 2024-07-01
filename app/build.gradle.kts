@@ -67,6 +67,4 @@ dependencies {
 
     implementation(project(":fenigepaytool"))
 
-    implementation("com.sdk.fenigepaytool:fenigeandroidlibrary:1.2")
-
 }

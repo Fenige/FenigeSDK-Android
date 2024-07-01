@@ -34,7 +34,7 @@ internal val httpModule = module {
             .addInterceptor(logging)
 
         Retrofit.Builder()
-            .baseUrl(BuildConfig.API_URL)
+            .baseUrl(Api.getTransactionUrl())
             .addConverterFactory(MoshiConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(httpClientBuilder.build())

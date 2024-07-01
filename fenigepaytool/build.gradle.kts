@@ -6,6 +6,9 @@ plugins {
     id("maven-publish")
 }
 
+group = "com.fenige"
+version = "1.0"
+
 android {
     namespace = "com.sdk.fenigepaytool"
     compileSdk = 34
@@ -19,12 +22,9 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "API_URL", "\"https://paytool-api-dev.fenige.pl/\"")
-            buildConfigField("String", "TRANSACTION_URL", "\"https://paytool-dev.fenige.pl/\"")
+
         }
         release {
-            buildConfigField("String", "API_URL", "\"https://paytool-api-dev.fenige.pl/\"")
-            buildConfigField("String", "TRANSACTION_URL", "\"https://paytool-dev.fenige.pl/\"")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -43,27 +43,29 @@ android {
         dataBinding = true
         viewBinding = true
     }
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
 }
 
 publishing {
     publications {
-        create<MavenPublication>("maven") {
-            groupId = "com.sdk.fenigepaytool"
-            artifactId = "fenigeandroidlibrary"
-            version = "1.2"
+        register<MavenPublication>("release") {
+            groupId = "com.fenige"
+            artifactId = "fenigeandroidtools"
+            version = "1.0"
 
-            artifact("$buildDir/outputs/aar/fenigepaytool-release.aar")
+            afterEvaluate {
+                from(components["release"])
+            }
         }
     }
-
     repositories {
         maven {
-            name = "GithubRepository"
-            url = uri("https://maven.pkg.github.com/Fenige/FenigeSDK-Android")
-            credentials {
-                username = "Fenige"
-                password = "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"
-            }
+            name = "fenigerepo"
+            url = uri("${project.buildDir}/fenigerepo")
         }
     }
 }
@@ -99,7 +101,4 @@ dependencies {
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.15.0")
 
     implementation ("com.intuit.sdp:sdp-android:1.1.0")
-
-  //  implementation("com.sdk.fenigepaytool:fenigeandroidlibrary:1.1")
-
 }

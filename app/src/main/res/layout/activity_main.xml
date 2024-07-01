@@ -1,11 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
+        android:layout_gravity="start"
+        android:orientation="vertical"
         android:padding="@dimen/_20sdp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/searchCountriesInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/apiKeyInput"
+                style="@style/InputStyle"
+                android:hint="Api Key"
+                android:text="a0185ee7-a197-4e3e-a830-a5d6992fba2f" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/transactionIdInput"
+                style="@style/InputStyle"
+                android:hint="Transaction ID"
+                android:text="39c92ae6-90bc-4a9f-9a29-761d958ffa51"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_gravity="center_horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/amountInput"
+                    style="@style/InputStyle"
+                    android:background="@drawable/background_edittext"
+                    android:hint="Amount (in cents)"
+                    android:text="100"
+                    android:inputType="numberSigned" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/currencySpinner"
+                android:layout_weight="0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/descriptionInput"
+                style="@style/InputStyle"
+                android:hint="Payment description"
+                android:text="Test payment"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Switch
+            android:id="@+id/autocleared"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Autocleared"
+            android:padding="@dimen/_4sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:gravity="center"
+            android:checked="true"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_gravity="start|center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Environment:"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp"/>
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/configSpinner"
+            android:layout_weight="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/createPaymentBtn"
@@ -14,6 +121,21 @@
             android:gravity="center"
             android:textSize="@dimen/_14sdp"
             android:text="Create Payment"
-            android:layout_gravity="center"/>
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:backgroundTint="@color/teal_200"/>
+
+        <TextView
+            android:id="@+id/transactionId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_13sdp"
+            android:textColor="@color/black"
+            android:visibility="gone"
+            android:drawablePadding="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:drawableEnd="@drawable/ic_copy"/>
     </LinearLayout>
 </layout>

@@ -1,6 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-
     <style name="Theme.AppCompat.Translucent" parent="Theme.AppCompat.NoActionBar">
         <!--on below line we are setting background as transparent color-->
         <item name="android:background">@android:color/transparent</item>
@@ -15,4 +14,5 @@
         <!--on below line we are adding a window animationstyle-->
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
     </style>
+
 </resources>
