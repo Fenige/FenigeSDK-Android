@@ -49,23 +49,24 @@ android {
         }
     }
 }
+afterEvaluate {
+    publishing {
+        publications {
+            register<MavenPublication>("release") {
+                groupId = "com.fenige"
+                artifactId = "fenigeandroidtools"
+                version = "1.0"
 
-publishing {
-    publications {
-        register<MavenPublication>("release") {
-            groupId = "com.fenige"
-            artifactId = "fenigeandroidtools"
-            version = "1.0"
-
-            afterEvaluate {
-                from(components["release"])
+                afterEvaluate {
+                    from(components["release"])
+                }
             }
         }
-    }
-    repositories {
-        maven {
-            name = "fenigerepo"
-            url = uri("${project.buildDir}/fenigerepo")
+        repositories {
+            maven {
+                name = "fenigerepo"
+                url = uri("${project.buildDir}/fenigerepo")
+            }
         }
     }
 }
