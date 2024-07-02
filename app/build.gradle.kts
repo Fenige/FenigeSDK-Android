@@ -40,6 +40,7 @@ dependencies {
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.core)
     implementation(libs.koin.android)
+    implementation(project(":fenigepaytool"))
     testImplementation(libs.koin.test)
 
     implementation(libs.retrofit)
@@ -60,8 +61,6 @@ dependencies {
 
     //scalable dp
     implementation("com.intuit.sdp:sdp-android:1.1.0")
-
-    implementation("'com.github.Fenige:FenigeSDK-Android:pre-release3")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
