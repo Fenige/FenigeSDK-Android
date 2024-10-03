@@ -10,9 +10,14 @@ import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import com.google.gson.Gson
 import com.sdk.fenigepaytool.api.Api
 import com.sdk.fenigepaytool.api.Api.Companion.getTransactionUrl
+import com.sdk.fenigepaytool.api.request.GpayRequest
+import com.sdk.fenigepaytool.api.request.Language
 import com.sdk.fenigepaytool.api.request.PaytoolRequest
+import com.sdk.fenigepaytool.api.request.Token
+import com.sdk.fenigepaytool.api.request.TypeOfAuthorization
 import com.sdk.fenigepaytool.databinding.ActivityPaytoolBinding
 import com.sdk.fenigepaytool.di.coreModule
 import com.sdk.fenigepaytool.entity.Config
@@ -27,6 +32,8 @@ internal class PaytoolActivity: AppCompatActivity() {
     companion object {
         private const val REQUEST_OBJECT_KEY = "request_object_key"
         private const val API_KEY_OBJECT_KEY = "api_key_object_key"
+        private const val GPAY_TOKEN_OBJECT_KEY = "token_object_key"
+        private const val EMAIL_OBJECT_KEY = "email_object_key"
         private lateinit var mPaytoolResultCallback: PaytoolResultCallback
 
         fun launch(
@@ -35,12 +42,12 @@ internal class PaytoolActivity: AppCompatActivity() {
             merchantUrl: String, orderNumber: String,
             formLanguage: String, redirectUrl: RedirectUrl,
             sender: Sender, transactionId: String,
-            autoClear: Boolean, config: Config,
-            paytoolResultCallback: PaytoolResultCallback
+            autoClear: Boolean, isRecurring: Boolean, config: Config,
+            paytoolResultCallback: PaytoolResultCallback,
         ) {
             val intent = Intent(activity, PaytoolActivity::class.java)
-            val bundle = Bundle()
             Api.config = config
+            val typeOfAuthorization = TypeOfAuthorization.getType(isRecurring).name
             val paytoolRequest = PaytoolRequest(
                 transactionId = transactionId,
                 currencyCode = currencyCode,
@@ -51,11 +58,51 @@ internal class PaytoolActivity: AppCompatActivity() {
                 formLanguage = formLanguage,
                 redirectUrl = redirectUrl,
                 sender = sender,
+                typeOfAuthorization = typeOfAuthorization,
                 autoClear = autoClear
             )
             mPaytoolResultCallback = paytoolResultCallback
+            val bundle = Bundle()
             bundle.putParcelable(REQUEST_OBJECT_KEY, paytoolRequest)
             bundle.putString(API_KEY_OBJECT_KEY, apiKey)
+            intent.putExtras(bundle)
+            activity.startActivity(intent)
+        }
+
+        fun launchWithGpay(
+            activity: Activity, apiKey: String,
+            token: String, email: String,
+            currencyCode: String,
+            amount: Int, description: String,
+            merchantUrl: String, orderNumber: String,
+            formLanguage: String, redirectUrl: RedirectUrl,
+            sender: Sender, transactionId: String,
+            autoClear: Boolean, isRecurring: Boolean, config: Config,
+            paytoolResultCallback: PaytoolResultCallback,
+        ) {
+            val intent = Intent(activity, PaytoolActivity::class.java)
+            Api.config = config
+            val typeOfAuthorization = TypeOfAuthorization.getType(isRecurring).name
+
+            val paytoolRequest = PaytoolRequest(
+                transactionId = transactionId,
+                currencyCode = currencyCode,
+                amount = amount,
+                description = description,
+                merchantUrl = merchantUrl,
+                orderNumber = orderNumber,
+                formLanguage = formLanguage,
+                redirectUrl = redirectUrl,
+                sender = sender,
+                typeOfAuthorization = typeOfAuthorization,
+                autoClear = autoClear
+            )
+            mPaytoolResultCallback = paytoolResultCallback
+            val bundle = Bundle()
+            bundle.putParcelable(REQUEST_OBJECT_KEY, paytoolRequest)
+            bundle.putString(API_KEY_OBJECT_KEY, apiKey)
+            bundle.putString(GPAY_TOKEN_OBJECT_KEY, token)
+            bundle.putString(EMAIL_OBJECT_KEY, email)
             intent.putExtras(bundle)
             activity.startActivity(intent)
         }
@@ -86,8 +133,26 @@ internal class PaytoolActivity: AppCompatActivity() {
         }
         observe(viewModel.transactionId) {
             transactionId = it
-            initWebView(it)
+            val token = getGpayToken()
+            if(token.isNullOrEmpty()) initWebView(it)
+            else executeGooglePay()
         }
+    }
+
+    private fun executeGooglePay() {
+        val paytoolRequest = getPaytoolRequest()
+        val token = Gson().fromJson(getGpayToken().orEmpty(), Token::class.java)
+        val request = GpayRequest(
+            transactionId = transactionId,
+            sender = com.sdk.fenigepaytool.api.request.Sender(
+                firstName = paytoolRequest.sender.firstName,
+                lastName = paytoolRequest.sender.lastName,
+                email = getEmail()
+            ),
+            token = token,
+            language = Language(paytoolRequest.formLanguage)
+        )
+        viewModel.googlePay(request)
     }
 
     private fun setOnClickListener() {
@@ -100,6 +165,10 @@ internal class PaytoolActivity: AppCompatActivity() {
         intent.getParcelableExtra<PaytoolRequest>(REQUEST_OBJECT_KEY)!!
 
     private fun getApiKey() = intent.getStringExtra((API_KEY_OBJECT_KEY))!!
+
+    private fun getGpayToken() : String? = intent.getStringExtra((GPAY_TOKEN_OBJECT_KEY))
+
+    private fun getEmail() = intent.getStringExtra((EMAIL_OBJECT_KEY))!!
 
     private fun initWebView(transactionId: String) {
         binding.progress.visibility = View.VISIBLE

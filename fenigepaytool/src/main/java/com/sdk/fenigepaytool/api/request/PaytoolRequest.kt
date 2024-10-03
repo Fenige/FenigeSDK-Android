@@ -20,4 +20,5 @@ internal data class PaytoolRequest (
     @Json(name = "merchantUrl") val merchantUrl: String,
     @Json(name = "orderNumber") val orderNumber: String,
     @Json(name = "autoClear") val autoClear: Boolean = false,
+    @Json(name = "typeOfAuthorization") val typeOfAuthorization: String,
 ): Parcelable

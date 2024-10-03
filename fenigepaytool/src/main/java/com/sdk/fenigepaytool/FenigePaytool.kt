@@ -14,24 +14,56 @@ object FenigePaytool {
         merchantUrl: String, orderNumber: String,
         formLanguage: String, redirectUrl: RedirectUrl,
         sender: Sender, transactionId: String,
-        autoClear: Boolean, config: Config,
+        autoClear: Boolean, isRecurring: Boolean, config: Config,
         paytoolResultCallback: PaytoolResultCallback
     ) {
         PaytoolActivity.launch(
-            activity,
-            apiKey,
-            currencyCode,
-            amount,
-            description,
-            merchantUrl,
-            orderNumber,
-            formLanguage,
-            redirectUrl,
-            sender,
-            transactionId,
-            autoClear,
-            config,
-            paytoolResultCallback
+            activity = activity,
+            apiKey = apiKey,
+            currencyCode = currencyCode,
+            amount = amount,
+            description = description,
+            merchantUrl = merchantUrl,
+            orderNumber = orderNumber,
+            formLanguage = formLanguage,
+            redirectUrl = redirectUrl,
+            sender = sender,
+            transactionId = transactionId,
+            autoClear = autoClear,
+            isRecurring = isRecurring,
+            config = config,
+            paytoolResultCallback = paytoolResultCallback
+        )
+    }
+
+    fun gpayPayment(
+        activity: AppCompatActivity, apiKey: String,
+        token: String, email: String, currencyCode: String,
+        amount: Int, description: String,
+        merchantUrl: String, orderNumber: String,
+        formLanguage: String, redirectUrl: RedirectUrl,
+        sender: Sender, transactionId: String,
+        autoClear: Boolean,  isRecurring: Boolean, config: Config,
+        paytoolResultCallback: PaytoolResultCallback
+    ) {
+        PaytoolActivity.launchWithGpay(
+            activity = activity,
+            apiKey = apiKey,
+            token = token,
+            email = email,
+            currencyCode = currencyCode,
+            amount = amount,
+            description = description,
+            merchantUrl = merchantUrl,
+            orderNumber = orderNumber,
+            formLanguage = formLanguage,
+            redirectUrl = redirectUrl,
+            sender = sender,
+            transactionId = transactionId,
+            autoClear = autoClear,
+            isRecurring = isRecurring,
+            config = config,
+            paytoolResultCallback = paytoolResultCallback
         )
     }
 }

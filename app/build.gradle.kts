@@ -9,7 +9,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.fenigesdkexample"
+        applicationId = "com.fenigesdk"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -61,11 +61,13 @@ dependencies {
     //scalable dp
     implementation("com.intuit.sdp:sdp-android:1.1.0")
 
-   // implementation("'com.github.Fenige:FenigeSDK-Android:pre-release7")
+    //implementation("com.github.Fenige:FenigeSDK-Android:pre-release8")
     implementation(project(":fenigepaytool"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    // Google pay
+    implementation ("com.google.android.gms:play-services-wallet:19.4.0")
 }
