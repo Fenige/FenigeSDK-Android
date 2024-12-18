@@ -19,8 +19,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/apiKeyInput"
                 style="@style/InputStyle"
-                android:hint="Api Key"
-                android:text="a0185ee7-a197-4e3e-a830-a5d6992fba2f" />
+                android:hint="Api Key" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,6 +88,18 @@
             android:layout_height="wrap_content"
             android:text="Autocleared"
             android:padding="@dimen/_4sdp"
+            android:textSize="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:gravity="center"
+            android:checked="true"/>
+
+        <Switch
+            android:id="@+id/recurring"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recurring"
+            android:textSize="@dimen/_14sdp"
+            android:padding="@dimen/_4sdp"
             android:layout_marginTop="@dimen/_6sdp"
             android:gravity="center"
             android:checked="true"/>
@@ -105,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:text="Environment:"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp"/>
+                android:textSize="@dimen/_14sdp"/>
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/configSpinner"
@@ -113,6 +124,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         </LinearLayout>
+
+        <com.google.android.gms.wallet.button.PayButton
+            android:id="@+id/gpayBtn"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/createPaymentBtn"

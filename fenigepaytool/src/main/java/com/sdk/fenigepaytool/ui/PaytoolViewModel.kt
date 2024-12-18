@@ -2,6 +2,7 @@ package com.sdk.fenigepaytool.ui
 
 import androidx.lifecycle.ViewModel
 import com.sdk.fenigepaytool.api.helpers.NetworkResult
+import com.sdk.fenigepaytool.api.request.GpayRequest
 import com.sdk.fenigepaytool.api.request.PaytoolRequest
 import com.sdk.fenigepaytool.repository.PaytoolRepository
 import com.sdk.fenigepaytool.utils.SingleLiveEvent
@@ -26,6 +27,24 @@ internal class PaytoolViewModel(private val paytoolRepository: PaytoolRepository
 
     internal fun getTransactionId(apiKey: String, paytoolRequest: PaytoolRequest) = scope.launch {
         paytoolRepository.getTransactionId(apiKey, paytoolRequest).apply {
+            when (this) {
+                is NetworkResult.Success -> {
+                    this.data.transactionId?.let {
+                        transactionId.postValue(it)
+                    }
+                    this.data.errorType?.let {
+                        error.postValue(it)
+                    }
+                }
+                is NetworkResult.Error -> {
+                    error.postValue("Network Error")
+                }
+            }
+        }
+    }
+
+    internal fun googlePay(gpayRequest: GpayRequest) = scope.launch {
+        paytoolRepository.payByGooglePay(gpayRequest).apply {
             when (this) {
                 is NetworkResult.Success -> {
                     this.data.transactionId?.let {

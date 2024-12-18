@@ -1,5 +1,6 @@
 package com.sdk.fenigepaytool.api
 
+import com.sdk.fenigepaytool.api.request.GpayRequest
 import com.sdk.fenigepaytool.api.request.PaytoolRequest
 import com.sdk.fenigepaytool.api.response.TransactionIdResponse
 import com.sdk.fenigepaytool.entity.Config
@@ -28,4 +29,10 @@ internal interface Api {
 
     @POST("https://paytool-api.fenige.pl/transactions/pre-initialization")
     suspend fun getTransactionIdProd(@Header(API_KEY_HEADER) header: String, @Body request: PaytoolRequest): TransactionIdResponse
+
+    @POST("https://paytool-api-dev.fenige.pl/transactions/google-pay")
+    suspend fun payByGooglePayDev(@Body request: GpayRequest): TransactionIdResponse
+
+    @POST("https://paytool-api-dev.fenige.pl/transactions/google-pay")
+    suspend fun payByGooglePayProd(@Body request: GpayRequest): TransactionIdResponse
 }
