@@ -9,34 +9,67 @@ Android version 7.0 (API lvl 24 or greater)
 
 ## Installation
 
-Installit use the maven repo:
+Install it use the maven repo:
 
 Gradle:
 
+Step 1. Add it in your root build.gradle at the end of repositories:
 ```groovy
-implementation ("com.github.Fenige:FenigeSDK-Android:{VERSION_NUMBER}'")
+dependencyResolutionManagement {
+  repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+  repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+  }
+}
 ```
+Step 2. Add the dependency:
+```groovy
+dependencies {
+  implementation 'com.github.Fenige:FenigeSDK-Android:Tag'
+}
+```
+
+Maven:
+
+Step 1. Add the JitPack repository to your build file
+```maven
+<repositories>
+  <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+  </repository>
+</repositories>
+```
+Step 2. Add the dependency:
+```maven
+<dependency>
+  <groupId>com.github.Fenige</groupId>
+  <artifactId>FenigeSDK-Android</artifactId>
+  <version>Tag</version>
+</dependency>
+ ```
 
 ### Init Payment
 
 You can init payment and will have callback with `Transaction ID`:
 ```kotlin
 FenigePaytool.initPayment(
-activity: AppCompatActivity, 
-apiKey: String, 
-currencyCode: String, 
-amount: Int, 
-description: String, 
-merchantUrl: String, 
-orderNumber: String, 
-formLanguage: String, 
-redirectUrl: com.sdk.fenigepaytool.entity.RedirectUrl, 
-sender: com.sdk.fenigepaytool.entity.Sender, 
-transactionId: String, 
-autoClear: Boolean, 
-config: com.sdk.fenigepaytool.entity.Config,
-paytoolResultCallback: com.sdk.fenigepaytool.entity.PaytoolResultCallback,
-isReccuring: Boolean
+  activity: AppCompatActivity, 
+  apiKey: String, 
+  currencyCode: String, 
+  amount: Int, 
+  description: String, 
+  merchantUrl: String, 
+  orderNumber: String, 
+  formLanguage: String, 
+  redirectUrl: com.sdk.fenigepaytool.entity.RedirectUrl, 
+  sender: com.sdk.fenigepaytool.entity.Sender, 
+  transactionId: String, 
+  autoClear: Boolean, 
+  config: com.sdk.fenigepaytool.entity.Config,
+  paytoolResultCallback: com.sdk.fenigepaytool.entity.PaytoolResultCallback,
+  isReccuring: Boolean
 ) 
 ```
 
