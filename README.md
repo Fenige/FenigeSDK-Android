@@ -14,7 +14,7 @@ Installit use the maven repo:
 Gradle:
 
 ```groovy
-com.github.Fenige:FenigeSDK-Android:{VERSION_NUMBER}' 
+implementation ("com.github.Fenige:FenigeSDK-Android:{VERSION_NUMBER}'")
 ```
 
 ### Init Payment
