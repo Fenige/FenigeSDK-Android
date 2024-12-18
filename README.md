@@ -54,6 +54,8 @@ Step 2. Add the dependency:
 
 You can init payment and will have callback with `Transaction ID`:
 ```kotlin
+import com.sdk.fenigepaytool.*
+
 FenigePaytool.initPayment(
   activity: AppCompatActivity, 
   apiKey: String, 
